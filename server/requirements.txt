@@ -1,0 +1,5 @@
+aiofiles==22.1.0
+aiohttp==3.8.3
+nfstream==6.5.2
+sqlalchemy==1.4.42
+psycopg2-binary==2.9.4

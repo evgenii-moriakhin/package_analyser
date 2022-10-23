@@ -1,0 +1,37 @@
+version: "1.0"
+services:
+    postgres:
+        restart: always
+        image: postgres
+        networks:
+            - default_net
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - "5432:5432"
+
+    grafana:
+      image: grafana/grafana:7.5.7
+      ports:
+        - 3000:3000
+      restart: unless-stopped
+      networks:
+        - default_net
+
+    backend:
+      networks:
+        - default_net
+      depends_on:
+        - postgres
+      build:
+        context: ../server/
+        dockerfile: Dockerfile
+      restart: always
+      environment:
+          - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
+      ports:
+          - "8000:8080"
+
+networks:
+    default_net:
